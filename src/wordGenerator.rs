@@ -4,15 +4,12 @@ use std::fs::create_dir;
 use std::fs::metadata;
 use std::fs::File;
 
-// const DIRECTORY_PATH: &str = "./FILES_DIRECTORY/";
-// const FILE_PATCH: &str = "./FILES_DIRECTORY/output.txt";
-
 pub struct Generator {
     file_path: String,
 }
 
 impl Generator {
-    pub fn new(file_name: String) -> generator {
+    pub fn new(file_name: String) -> Generator {
         let base_path: String = "./FILES_DIRECTORY/".to_string();
 
         Generator {
