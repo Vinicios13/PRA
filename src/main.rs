@@ -1,5 +1,6 @@
-mod wordGenerator;
+mod word_generator;
 
 fn main() {
-    let teste = wordGenerator::Generator::new("output.txt".to_string());
+    let mut gerador_1 = word_generator::Generator::new();
+    gerador_1.set_file_path("a.txt".to_string());
 }
