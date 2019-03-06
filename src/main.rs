@@ -1,3 +1,5 @@
+mod wordGenerator;
+
 fn main() {
-    println!("Hello, world!");
+    let teste = wordGenerator::generator::new("output.txt".to_string());
 }
