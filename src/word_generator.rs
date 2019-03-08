@@ -1,20 +1,16 @@
 #![allow(dead_code)]
 
+use rand::Rng;
 use std::error::Error;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
-use rand::Rng;
 
 const BASE_PATH: &str = "./FILES_DIRECTORY/";
 
 const ASCII_LOWER: [char; 26] = [
-    'a', 'b', 'c', 'd', 'e', 
-    'f', 'g', 'h', 'i', 'j', 
-    'k', 'l', 'm', 'n', 'o',
-    'p', 'q', 'r', 's', 't', 
-    'u', 'v', 'w', 'x', 'y', 
-    'z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+    't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
 pub struct Generator {
@@ -53,7 +49,7 @@ impl Generator {
             .open(self.get_file_path())
             .unwrap();
 
-        match writeln!(file, "{}", data) {
+        match write!(file, "{}", data) {
             Ok(_) => (),
             Err(why) => panic!("couldn't save {}: {}", self.file_path, why.description()),
         }
@@ -71,9 +67,10 @@ impl Generator {
     }
 
     fn generate_line(&self) -> String {
-        let temp: String = (0..10).map(|_| ( ASCII_LOWER[rand::thread_rng().gen_range(1, 26)])).collect();
+        let temp: String = (0..10)
+            .map(|_| (ASCII_LOWER[rand::thread_rng().gen_range(1, 26)]))
+            .collect();
         format!("{}\n", temp)
-        //(0..10).map(|_| ( ASCII_LOWER[rand::thread_rng().gen_range(1, 27)])).collect()
     }
 }
 // pub fn save_file() {

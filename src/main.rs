@@ -7,8 +7,8 @@ fn main() {
     gerador_1.set_file_path("bla123.txt".to_string());
 
     let start = PreciseTime::now();
-    //gerador_1.generate_from_lines(10_000_000i32);
-    thread::sleep(time::Duration::from_millis(10));
+    gerador_1.generate_from_lines(100_000_000i32);
+    // thread::sleep(time::Duration::from_millis(5000));
 
     let end = PreciseTime::now();
     println!("{}", start.to(end))
