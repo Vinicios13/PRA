@@ -2,8 +2,20 @@
 
 use std::error::Error;
 use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Write;
+use rand::Rng;
 
 const BASE_PATH: &str = "./FILES_DIRECTORY/";
+
+const ASCII_LOWER: [char; 26] = [
+    'a', 'b', 'c', 'd', 'e', 
+    'f', 'g', 'h', 'i', 'j', 
+    'k', 'l', 'm', 'n', 'o',
+    'p', 'q', 'r', 's', 't', 
+    'u', 'v', 'w', 'x', 'y', 
+    'z',
+];
 
 pub struct Generator {
     file_path: String,
@@ -25,15 +37,43 @@ impl Generator {
         self.create_file();
     }
 
-    pub fn check_file_exist(&self) -> bool {
+    pub fn generate_from_lines(&self, qty: i32) {
+        let mut temp_string: String = "".to_owned();
+
+        for _i in 0..qty {
+            temp_string.push_str(&self.generate_line());
+        }
+
+        self.save_file(temp_string)
+    }
+
+    fn save_file(&self, data: String) {
+        let mut file = OpenOptions::new()
+            .append(true)
+            .open(self.get_file_path())
+            .unwrap();
+
+        match writeln!(file, "{}", data) {
+            Ok(_) => (),
+            Err(why) => panic!("couldn't save {}: {}", self.file_path, why.description()),
+        }
+    }
+
+    fn check_file_exist(&self) -> bool {
         std::fs::metadata(self.get_file_path()).is_ok()
     }
 
-    pub fn create_file(&self) {
+    fn create_file(&self) {
         match File::create(self.get_file_path()) {
             Ok(_) => (),
             Err(why) => panic!("couldn't create {}: {}", self.file_path, why.description()),
         }
+    }
+
+    fn generate_line(&self) -> String {
+        let temp: String = (0..10).map(|_| ( ASCII_LOWER[rand::thread_rng().gen_range(1, 26)])).collect();
+        format!("{}\n", temp)
+        //(0..10).map(|_| ( ASCII_LOWER[rand::thread_rng().gen_range(1, 27)])).collect()
     }
 }
 // pub fn save_file() {
