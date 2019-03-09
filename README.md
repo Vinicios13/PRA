@@ -5,4 +5,4 @@ This repo will have multiples projects related to my discipline of Projects of F
 ##### Projects list
 
 - projeto_1
-  - A simple text writen in rust
+  - A simple text generator writen in rust
