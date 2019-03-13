@@ -5,6 +5,7 @@ use std::error::Error;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
+use std::io::{BufRead, BufReader};
 
 const BASE_PATH: &str = "./FILES_DIRECTORY/";
 
@@ -15,12 +16,14 @@ const ASCII_LOWER: [char; 26] = [
 
 pub struct Generator {
     file_path: String,
+    pagination_size: i32,
 }
 
 impl Generator {
     pub fn new() -> Generator {
         Generator {
             file_path: format!("{}{}", BASE_PATH, "output.txt".to_string()),
+            pagination_size: 300i32,
         }
     }
 
@@ -33,7 +36,41 @@ impl Generator {
         self.create_file();
     }
 
-    pub fn generate_from_lines(&self, qty: i32) {
+    pub fn set_pagination_size(&mut self, size: i32) {
+        self.pagination_size = size
+    }
+
+    pub fn generate_from_lines(&self, mut qty: i32) {
+        loop {
+            if qty - self.pagination_size > 0 {
+                qty = qty - self.pagination_size;
+
+                self.generate_line_by_num(self.pagination_size);
+            } else {
+                self.generate_line_by_num(qty);
+                break;
+            }
+        }
+    }
+
+    pub fn generate_from_mb_size(&self, size: i32) -> std::io::Result<()> {
+        while std::fs::metadata(self.get_file_path())?.len() as f32 / 1e+6f32 < size as f32 {
+            self.generate_line_by_num(self.pagination_size)
+        }
+        Ok(())
+    }
+
+    pub fn get_file(&self) -> std::io::Result<()> {
+        let file = File::open(self.get_file_path())?;
+        let file = BufReader::new(file);
+
+        for (num, line) in file.lines().enumerate().take(self.pagination_size as usize) {
+            println!("{} : {}", num, line?.to_uppercase());
+        }
+        Ok(())
+    }
+
+    fn generate_line_by_num(&self, qty: i32) {
         let mut temp_string: String = "".to_owned();
 
         for _i in 0..qty {
@@ -67,30 +104,36 @@ impl Generator {
     }
 
     fn generate_line(&self) -> String {
-        let temp: String = (0..10)
+        format!(
+            "{} x {} - {} x {} - {} - {}\n",
+            self.generate_string(),
+            self.generate_string(),
+            self.generate_number(),
+            self.generate_number(),
+            self.generate_date(),
+            self.generate_number_of_people()
+        )
+    }
+
+    fn generate_string(&self) -> String {
+        (0..rand::thread_rng().gen_range(1, 21))
             .map(|_| (ASCII_LOWER[rand::thread_rng().gen_range(1, 26)]))
-            .collect();
-        format!("{}\n", temp)
+            .collect()
+    }
+
+    fn generate_number(&self) -> i32 {
+        rand::thread_rng().gen_range(0, 16)
+    }
+
+    fn generate_date(&self) -> String {
+        let day = rand::thread_rng().gen_range(1, 32);
+        let month = rand::thread_rng().gen_range(1, 13);
+        let year = rand::thread_rng().gen_range(2012, 2020);
+
+        format!("{}/{}/{}", day, month, year)
+    }
+
+    fn generate_number_of_people(&self) -> i32 {
+        rand::thread_rng().gen_range(0, 50_001)
     }
 }
-// pub fn save_file() {
-//     // if check_file_exist() {
-//     //     print!("HUE");
-//     // } else {
-
-//     // }
-// }
-
-// fn check_directory_path_exists_create_if_not() -> bool {
-//     if !metadata(DIRECTORY_PATH).is_ok() {
-//         match create_dir(DIRECTORY_PATH) {
-//             Ok(()) => true,
-//             Err(_) => panic!(
-//                 "Erro ao criar a pasta '{}' na root do projeto",
-//                 DIRECTORY_PATH
-//             ),
-//         }
-//     } else {
-//         true
-//     }
-// }
