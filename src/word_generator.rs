@@ -60,7 +60,7 @@ impl Generator {
         Ok(())
     }
 
-    pub fn get_file(&self) -> std::io::Result<()> {
+    pub fn print_file(&self) -> std::io::Result<()> {
         let file = File::open(self.get_file_path())?;
         let file = BufReader::new(file);
 

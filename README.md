@@ -1,8 +1,21 @@
-# PRA
+### Usage
 
-This repo will have multiples projects related to my discipline of Projects of Files. each branch will feature those projects.
+```{.rust .cb.run}
+mod word_generator;
 
-##### Projects list
+fn main() {
+    let mut gerador_1 = word_generator::Generator::new();
+    //creates a new file under FILES_DIRECTORY
+    gerador_1.set_file_path('test');
 
-- projeto_1
-  - A simple text generator writen in rust
+    //define the number of lines that will be saved in memory before saving it into the file
+    gerador_1.set_pagination_size(10000i32);
+
+    //there are two ways to generate txt, by mb size or number of lines
+    gerador_1.generate_from_lines(10000i32);
+    gerador_1.generate_from_mb_size(1024i32);
+
+    //will print the file till pagination limit
+    gerador_1.print_file();
+}
+```
