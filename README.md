@@ -1,6 +1,6 @@
 ### Usage
 
-```{.rust .cb.run}
+```rust no_run
 mod word_generator;
 
 fn main() {
