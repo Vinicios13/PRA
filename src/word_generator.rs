@@ -53,21 +53,27 @@ impl Generator {
         }
     }
 
-    pub fn generate_from_mb_size(&self, size: i32) -> std::io::Result<()> {
-        while std::fs::metadata(self.get_file_path())?.len() as f32 / 1e+6f32 < size as f32 {
+    pub fn generate_from_mb_size(&self, size: i32) {
+        while std::fs::metadata(self.get_file_path())
+            .expect("Couldn't open the file")
+            .len() as f32
+            / 1e+6f32
+            < size as f32
+        {
             self.generate_line_by_num(self.pagination_size)
         }
-        Ok(())
     }
 
-    pub fn print_file(&self) -> std::io::Result<()> {
-        let file = File::open(self.get_file_path())?;
-        let file = BufReader::new(file);
+    pub fn print_file(&self) {
+        let file =
+            BufReader::new(File::open(self.get_file_path()).expect("Couldn't open the file"));
 
-        for (num, line) in file.lines().enumerate().take(self.pagination_size as usize) {
-            println!("{} : {}", num, line?.to_uppercase());
+        for (_num, line) in file.lines().enumerate().take(self.pagination_size as usize) {
+            match line {
+                Ok(line) => println!("{}", line.to_uppercase()),
+                _ => (),
+            }
         }
-        Ok(())
     }
 
     fn generate_line_by_num(&self, qty: i32) {
