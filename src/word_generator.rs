@@ -163,9 +163,9 @@ impl Generator {
         let string = rand::thread_rng().gen_range(0, 16).to_string();
 
         if string.chars().count() < 2 {
-            format!("0{}       ", string)
+            format!("0{}      ", string)
         } else {
-            format!("{}       ", string)
+            format!("{}      ", string)
         }
     }
 
@@ -196,10 +196,10 @@ impl Generator {
                 "  INDEX",
                 "       TEAM 1       ",
                 "       TEAM 2       ",
-                " Score 1 ",
-                " Score 2 ",
-                self.generate_date(),
-                self.generate_number_of_people()
+                " Score 1",
+                " Score 2",
+                " GAME DATE",
+                " PUBLIC NUMBER"
             ));
             self.header_is_set = true;
         }
