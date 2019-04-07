@@ -9,8 +9,8 @@ fn main() {
     gerador_1.set_pagination_size(10000i32);
 
     //there are two ways to generate txt, by mb size or number of lines
-    gerador_1.generate_from_lines(10000i32);
-    gerador_1.generate_from_mb_size(10i32);
+    gerador_1.generate_from_lines(3i32);
+    // gerador_1.generate_from_mb_size(10i32);
 
     //will print the file till pagination limit
     gerador_1.print_file();
