@@ -127,7 +127,7 @@ impl Generator {
 
     fn generate_line(&self, index: u32) -> String {
         format!(
-            "{} | {} | {} | {} | {} | {} | {}\n",
+            "| {} | {} | {} | {} | {} | {} | {}\n",
             self.get_formated_index(index),
             self.generate_string(),
             self.generate_string(),
@@ -192,7 +192,7 @@ impl Generator {
     fn set_header_if_not_set(&mut self) {
         if !self.header_is_set {
             self.save_file(format!(
-                "{} | {} | {} | {} | {} | {} | {}\n",
+                "| {} | {} | {} | {} | {} | {} | {}\n",
                 "  INDEX",
                 "       TEAM 1       ",
                 "       TEAM 2       ",
